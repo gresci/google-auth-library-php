@@ -32,7 +32,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * @var \DateTime|null
      */
-    private \DateTime $expiration;
+    private ?\DateTime $expiration;
 
     /**
      * @var bool
@@ -46,12 +46,13 @@ final class TypedItem implements CacheItemInterface
         private string $key
     ) {
         $this->key = $key;
+        $this->expiration = null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -59,7 +60,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function get(): mixed
     {
         return $this->isHit() ? $this->value : null;
     }
@@ -67,7 +68,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function isHit()
+    public function isHit(): bool
     {
         if (!$this->isHit) {
             return false;
@@ -83,7 +84,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function set($value)
+    public function set(mixed $value): static
     {
         $this->isHit = true;
         $this->value = $value;
@@ -94,7 +95,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function expiresAt($expiration)
+    public function expiresAt($expiration): static
     {
         if ($this->isValidExpiration($expiration)) {
             $this->expiration = $expiration;
@@ -119,7 +120,7 @@ final class TypedItem implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function expiresAfter($time)
+    public function expiresAfter($time): static
     {
         if (is_int($time)) {
             $this->expiration = $this->currentTime()->add(new \DateInterval("PT{$time}S"));

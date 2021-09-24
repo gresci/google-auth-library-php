@@ -109,7 +109,7 @@ class SysVCacheItemPool implements CacheItemPoolInterface
                     clone $this->items[$key] :
                     new TypedItem($key);
             }
-        else {
+        } else {
             foreach ($keys as $key) {
                 $items[$key] = $this->hasItem($key) ?
                     clone $this->items[$key] :
