@@ -24,6 +24,10 @@ class ItemTest extends TestCase
 {
     public function getItem($key)
     {
+        if (\PHP_VERSION_ID >= 80000) {
+            return new TypedItem($key);
+        }
+
         return new Item($key);
     }
 

@@ -22,40 +22,36 @@ use Psr\Cache\CacheItemInterface;
 /**
  * A cache item.
  */
-final class Item implements CacheItemInterface
+final class TypedItem implements CacheItemInterface
 {
-    /**
-     * @var string
-     */
-    private $key;
-
     /**
      * @var mixed
      */
-    private $value;
+    private mixed $value;
 
     /**
      * @var \DateTime|null
      */
-    private $expiration;
+    private \DateTime $expiration;
 
     /**
      * @var bool
      */
-    private $isHit = false;
+    private bool $isHit = false;
 
     /**
      * @param string $key
      */
-    public function __construct($key)
-    {
+    public function __construct(
+        private string $key
+    ) {
         $this->key = $key;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getKey(): string
+    public function getKey()
     {
         return $this->key;
     }
@@ -63,7 +59,7 @@ final class Item implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function get(): mixed
+    public function get()
     {
         return $this->isHit() ? $this->value : null;
     }
@@ -71,7 +67,7 @@ final class Item implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function isHit(): bool
+    public function isHit()
     {
         if (!$this->isHit) {
             return false;
@@ -87,7 +83,7 @@ final class Item implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function set(mixed $value): static
+    public function set($value)
     {
         $this->isHit = true;
         $this->value = $value;
@@ -98,7 +94,7 @@ final class Item implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function expiresAt($expiration): static
+    public function expiresAt($expiration)
     {
         if ($this->isValidExpiration($expiration)) {
             $this->expiration = $expiration;
@@ -123,7 +119,7 @@ final class Item implements CacheItemInterface
     /**
      * {@inheritdoc}
      */
-    public function expiresAfter($time): static
+    public function expiresAfter($time)
     {
         if (is_int($time)) {
             $this->expiration = $this->currentTime()->add(new \DateInterval("PT{$time}S"));
