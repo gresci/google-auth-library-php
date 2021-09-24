@@ -52,11 +52,11 @@ final class MemoryCacheItemPool implements CacheItemPoolInterface
 
         if (\PHP_VERSION_ID >= 80000) {
             foreach ($keys as $key) {
-                $items[$key] = $this->hasItem($key) ? clone $this->items[$key] : new Item($key);
+                $items[$key] = $this->hasItem($key) ? clone $this->items[$key] : new TypedItem($key);
             }
         } else {
             foreach ($keys as $key) {
-                $items[$key] = $this->hasItem($key) ? clone $this->items[$key] : new TypedItem($key);
+                $items[$key] = $this->hasItem($key) ? clone $this->items[$key] : new Item($key);
             }
         }
 

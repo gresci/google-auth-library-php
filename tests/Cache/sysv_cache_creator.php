@@ -27,9 +27,9 @@ $value = $argv[1];
 // Use the same variableKey in the test.
 $pool = new SysVCacheItemPool(['variableKey' => 99]);
 if (\PHP_VERSION_ID >= 80000) {
-    $item = new Item('separate-process-item');
+    $item = new TypeItem('separate-process-item');
 } else {
-    $item = new TypedItem('separate-process-item');
+    $item = new dItem('separate-process-item');
 }
 $item->set($value);
 $pool->save($item);
